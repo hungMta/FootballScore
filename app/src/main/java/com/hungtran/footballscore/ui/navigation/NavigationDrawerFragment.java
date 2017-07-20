@@ -186,4 +186,6 @@ public class NavigationDrawerFragment extends Fragment implements Competition.On
     public static void setOnFragmentDrawerListener(OnFragmentDrawerListener listener) {
         onFragmentDrawerListener = listener;
     }
+
+
 }

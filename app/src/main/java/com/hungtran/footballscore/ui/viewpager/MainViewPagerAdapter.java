@@ -1,9 +1,11 @@
 package com.hungtran.footballscore.ui.viewpager;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.ui.viewpager.leagueTable.LeagueTableFragment;
 import com.hungtran.footballscore.ui.viewpager.match.MatchFragment;
 import com.hungtran.footballscore.ui.viewpager.personal.PersonalFragment;
@@ -14,8 +16,11 @@ import com.hungtran.footballscore.ui.viewpager.personal.PersonalFragment;
 
 public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    public MainViewPagerAdapter(FragmentManager fm) {
+    private Competition mCompetition;
+
+    public MainViewPagerAdapter(FragmentManager fm, Competition competition) {
         super(fm);
+        mCompetition = competition;
     }
 
     @Override
@@ -23,7 +28,7 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new MatchFragment();
+                fragment = MatchFragment.newInstance(mCompetition);
                 break;
             case 1:
                 fragment = new LeagueTableFragment();

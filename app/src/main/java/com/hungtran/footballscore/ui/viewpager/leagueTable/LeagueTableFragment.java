@@ -14,6 +14,7 @@ import com.hungtran.footballscore.R;
  */
 
 public class LeagueTableFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

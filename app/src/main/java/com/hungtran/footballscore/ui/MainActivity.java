@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new PremierLeagueFragment();
+                fragment = PremierLeagueFragment.newInstance(competition);
                 break;
             default:
                 return;

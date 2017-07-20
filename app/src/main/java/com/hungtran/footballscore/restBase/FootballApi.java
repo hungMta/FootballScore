@@ -1,10 +1,7 @@
 package com.hungtran.footballscore.restBase;
 
-
-import com.hungtran.footballscore.model.competition.Competition;
-
+import com.hungtran.footballscore.modelApi.competition.Competition;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -13,9 +10,6 @@ import retrofit2.http.GET;
  */
 
 public interface FootballApi {
-
-//    @GET("/v1/competitions/424/LeagueTable")
-//    Call<LeagueTable> getLeaguge();
 
     @GET("/v1/competitions")
     Call<List<Competition>> getCompetion();

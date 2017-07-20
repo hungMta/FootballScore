@@ -7,12 +7,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.hungtran.footballscore.R;
+import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.ui.home.HomeFragment;
-import com.hungtran.footballscore.ui.league.LeagueFragment;
+import com.hungtran.footballscore.ui.PremierLeague.PremierLeagueFragment;
 import com.hungtran.footballscore.ui.navigation.NavigationDrawerFragment;
 
 
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private HomeFragment homeFragment;
-    private LeagueFragment leagueFragment;
+    private PremierLeagueFragment leagueFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +51,19 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         fragmentTransaction.commit();
     }
 
-    private void displayView(int position) {
+    private void displayView(int position, Competition competition) {
         Fragment fragment = null;
-        String title = "";
         switch (position) {
             case 0:
                 fragment = new HomeFragment();
-                title = "Home";
                 break;
             case 1:
-                fragment = new LeagueFragment();
-                title = "League";
+                fragment = new PremierLeagueFragment();
                 break;
+            default:
+                return;
         }
-        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setTitle(competition.getCaption());
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     }
 
     @Override
-    public void onDrawerItemSelected(int position) {
-        displayView(position);
+    public void onDrawerItemSelected(int position, Competition competition) {
+        displayView(position, competition);
     }
 }

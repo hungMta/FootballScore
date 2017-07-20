@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hungtran.footballscore.R;
+import com.hungtran.footballscore.modelApi.competition.Competition;
 
 import java.util.List;
 
@@ -16,12 +18,13 @@ import java.util.List;
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter {
 
-    private List<String> listMenu;
+    private List<Competition> competitionList;
     private Context mContext;
+    private static OnItemNavigationClickListener onItemNavigationClickListener;
 
-    public NavigationDrawerAdapter(Context context, List<String> list) {
+    public NavigationDrawerAdapter(Context context, List<Competition> competition) {
         this.mContext = context;
-        this.listMenu = list;
+        this.competitionList = competition;
     }
 
     @Override
@@ -30,13 +33,24 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ItemView) holder).txtMenu.setText(listMenu.get(position));
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        ((ItemView) holder).txtMenu.setText(competitionList.get(position).getCaption());
+        ((ItemView)holder).txtMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemNavigationClickListener.onItemNavigationClick(position,competitionList.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return listMenu == null ? 0 : listMenu.size();
+        return competitionList == null ? 0 : competitionList.size();
+    }
+
+    public void notifyChange(List<Competition> list){
+        this.competitionList = list;
+        notifyDataSetChanged();
     }
 
     private class ItemView extends RecyclerView.ViewHolder {
@@ -48,5 +62,14 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter {
             txtMenu = (TextView) itemView.findViewById(R.id.title);
         }
     }
+
+    public interface OnItemNavigationClickListener{
+        void onItemNavigationClick(int pos, Competition competition);
+    }
+
+    public  void setOnItemNavigationClickListener(OnItemNavigationClickListener listener){
+        onItemNavigationClickListener = listener;
+    }
+
 
 }

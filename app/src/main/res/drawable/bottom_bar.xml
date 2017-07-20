@@ -1,0 +1,8 @@
+<tabs>
+    <tab activeColor="@color/colorAccent" icon="@drawable/ic_icon_ball" id="@+id/tab_ball"
+        title="Match" />
+    <tab activeColor="@color/colorAccent" icon="@drawable/ic_icon_cup" id="@+id/tab_table"
+        title="League table" />
+    <tab activeColor="@color/colorAccent" icon="@drawable/ic_icn_star" id="@+id/tab_star"
+        title="Personal" />
+</tabs>

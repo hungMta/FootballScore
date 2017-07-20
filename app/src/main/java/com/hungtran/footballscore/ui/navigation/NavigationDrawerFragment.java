@@ -16,9 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.google.gson.Gson;
 import com.hungtran.footballscore.R;
+import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.ui.navigation.adapter.NavigationDrawerAdapter;
+import com.hungtran.footballscore.utils.PreferentUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,10 +30,11 @@ import java.util.List;
  * Created by Hung Tran on 28/06/2017.
  */
 
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements Competition.OnLoadApiCompetitionsListener, NavigationDrawerAdapter.OnItemNavigationClickListener {
+
+    private static final String KEY_COMPETITION = "COMPETITION";
 
     private Context mContext;
-
     private NavigationDrawerAdapter navigationDrawerAdapter;
     private RecyclerView recyclerView;
     private View containerView;
@@ -62,28 +67,33 @@ public class NavigationDrawerFragment extends Fragment {
         this.mContext = context;
     }
 
+
+    @Override
+    public void onLoadSuccessApiCompetitions(List<Competition> competitionList) {
+        navigationDrawerAdapter.notifyChange(competitionList);
+    }
+
+    @Override
+    public void onLoadFailedApiCompetitions(String message, int errorCode) {
+
+    }
+
+    @Override
+    public void onItemNavigationClick(int position, Competition competition) {
+        onFragmentDrawerListener.onDrawerItemSelected(position, competition);
+        mDrawerLayout.closeDrawer(containerView);
+    }
+
+
     private void initRecycler() {
         recyclerView.removeAllViews();
-        String[] menu = getResources().getStringArray(R.array.Menu);
-        List<String> listMenu = Arrays.asList(menu);
-        navigationDrawerAdapter = new NavigationDrawerAdapter(mContext, listMenu);
+        navigationDrawerAdapter = new NavigationDrawerAdapter(mContext, null);
+        Competition.newInstance(mContext).getListCompetition(this);
+        navigationDrawerAdapter.setOnItemNavigationClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(navigationDrawerAdapter);
-
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                onFragmentDrawerListener.onDrawerItemSelected(position);
-                mDrawerLayout.closeDrawer(containerView);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
     }
 
 
@@ -170,7 +180,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public interface OnFragmentDrawerListener {
-        void onDrawerItemSelected(int position);
+        void onDrawerItemSelected(int position, Competition competition);
     }
 
     public static void setOnFragmentDrawerListener(OnFragmentDrawerListener listener) {

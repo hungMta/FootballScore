@@ -1,4 +1,4 @@
-package com.hungtran.footballscore.model.leagueTable;
+package com.hungtran.footballscore.modelApi.leagueTable;
 
 /**
  * Created by Hung Tran on 25/06/2017.

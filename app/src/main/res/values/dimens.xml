@@ -2,6 +2,6 @@
 <resources>
 
     <dimen name="img_menu">40dp</dimen>
-    <dimen name="width_navigation">250dp</dimen>
+    <dimen name="width_navigation">280dp</dimen>
 
 </resources>

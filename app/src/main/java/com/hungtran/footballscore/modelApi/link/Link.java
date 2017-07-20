@@ -1,9 +1,9 @@
-package com.hungtran.footballscore.model.link;
+package com.hungtran.footballscore.modelApi.link;
 
-import com.hungtran.footballscore.model.link.field.Fixtures;
-import com.hungtran.footballscore.model.link.field.LeagueTable;
-import com.hungtran.footballscore.model.link.field.Seft;
-import com.hungtran.footballscore.model.link.field.Teams;
+import com.hungtran.footballscore.modelApi.link.field.Fixtures;
+import com.hungtran.footballscore.modelApi.link.field.LeagueTable;
+import com.hungtran.footballscore.modelApi.link.field.Seft;
+import com.hungtran.footballscore.modelApi.link.field.Teams;
 
 /**
  * Created by Hung Tran on 30/06/2017.

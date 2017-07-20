@@ -1,9 +1,9 @@
-package com.hungtran.footballscore.model.competition;
+package com.hungtran.footballscore.modelApi.competition;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.hungtran.footballscore.model.link.Link;
+import com.hungtran.footballscore.modelApi.link.Link;
 import com.hungtran.footballscore.restBase.ServiceGenerator;
 
 import java.util.Date;
@@ -21,7 +21,87 @@ public class Competition {
 
     private transient static Competition competition;
     private transient static Context mContext;
-    private transient static OnLoadApiCompetitionsListener onLoadApiCompetitionsListener;
+
+    public Link get_links() {
+        return _links;
+    }
+
+    public void set_links(Link _links) {
+        this._links = _links;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public String getLeague() {
+        return league;
+    }
+
+    public void setLeague(String league) {
+        this.league = league;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public int getCurrentMatchday() {
+        return currentMatchday;
+    }
+
+    public void setCurrentMatchday(int currentMatchday) {
+        this.currentMatchday = currentMatchday;
+    }
+
+    public int getNumberOfMatchdays() {
+        return numberOfMatchdays;
+    }
+
+    public void setNumberOfMatchdays(int numberOfMatchdays) {
+        this.numberOfMatchdays = numberOfMatchdays;
+    }
+
+    public int getNumberOfTeams() {
+        return numberOfTeams;
+    }
+
+    public void setNumberOfTeams(int numberOfTeams) {
+        this.numberOfTeams = numberOfTeams;
+    }
+
+    public int getNumberOfGames() {
+        return numberOfGames;
+    }
+
+    public void setNumberOfGames(int numberOfGames) {
+        this.numberOfGames = numberOfGames;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
     private Link _links;
 
     private int id;
@@ -53,8 +133,7 @@ public class Competition {
     /**
      * call api to get list available competitions
      */
-
-    public void getListCompetition() {
+    public void getListCompetition(final OnLoadApiCompetitionsListener onLoadApiCompetitionsListener) {
         Call<List<Competition>> call = ServiceGenerator.resquest(mContext, ServiceGenerator.TIMEOUT_SHORT).getCompetion();
         call.enqueue(new Callback<List<Competition>>() {
             @Override
@@ -79,6 +158,6 @@ public class Competition {
     }
 
     public static void setOnLoadApiCompetitionsListener(OnLoadApiCompetitionsListener listener) {
-        onLoadApiCompetitionsListener = listener;
+     //   onLoadApiCompetitionsListener = listener;
     }
 }

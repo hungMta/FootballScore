@@ -1,4 +1,4 @@
-package com.hungtran.footballscore.ui.league;
+package com.hungtran.footballscore.ui.viewpager.leagueTable;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,15 +10,16 @@ import android.view.ViewGroup;
 import com.hungtran.footballscore.R;
 
 /**
- * Created by Hung Tran on 28/06/2017.
+ * Created by Hung Tran on 02/07/2017.
  */
 
-public class LeagueFragment extends Fragment {
-
+public class LeagueTableFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_league, container, false);
+        View view;
+        view = inflater.inflate(R.layout.fragment_table,container,false);
         return view;
     }
+
 }

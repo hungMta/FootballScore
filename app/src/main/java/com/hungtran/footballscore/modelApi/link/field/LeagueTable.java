@@ -1,4 +1,4 @@
-package com.hungtran.footballscore.model.link.field;
+package com.hungtran.footballscore.modelApi.link.field;
 
 /**
  * Created by Hung Tran on 30/06/2017.

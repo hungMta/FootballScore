@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceGenerator {
 
     public static final int TIMEOUT_SHORT = 9;
+    public static final int TIMEOUT_LENGHT = 60*5;
 
     private static final String BASE_URL = "http://api.football-data.org";
     private static FootballApi footballApi;

@@ -62,7 +62,7 @@ public class Competition implements Serializable {
             public void onResponse(Call<List<Competition>> call, Response<List<Competition>> response) {
                 if (response.isSuccessful()) {
                     onLoadApiCompetitionsListener.onLoadSuccessApiCompetitions(response.body());
-                    CacheUtil.newInstance(mContext).saveCache(response.body().toString(), CacheUtil.FILE_NAME_COMPETITION);
+//                    CacheUtil.newInstance(mContext).saveCache(response.body().toString(), CacheUtil.FILE_NAME_COMPETITION);
                 }
             }
 

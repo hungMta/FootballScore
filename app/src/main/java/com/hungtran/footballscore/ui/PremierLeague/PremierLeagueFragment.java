@@ -31,12 +31,11 @@ public class PremierLeagueFragment extends Fragment {
     private static PremierLeagueFragment premierLeagueFragment;
 
     public static PremierLeagueFragment newInstance(Competition compe) {
-        if (premierLeagueFragment == null) {
-            premierLeagueFragment = new PremierLeagueFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(BUNDLE_COMPETITION, compe);
-            premierLeagueFragment.setArguments(bundle);
-        }
+        premierLeagueFragment = new PremierLeagueFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BUNDLE_COMPETITION, compe);
+        premierLeagueFragment.setArguments(bundle);
+
         return premierLeagueFragment;
     }
 

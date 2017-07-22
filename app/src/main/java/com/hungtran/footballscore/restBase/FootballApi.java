@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Path;
 
 /**
@@ -16,8 +17,8 @@ import retrofit2.http.Path;
 public interface FootballApi {
 
     @GET("/v1/competitions")
-    Call<List<Competition>> getCompetion();
+    Call<List<Competition>> getCompetion(@Header("X-Auth-Token") String auth_token);
 
     @GET("/v1/competitions/{id_competition}/fixtures")
-    Call<FixturesLeague> getFixturesCompetition(@Path("id_competition") int idCompetition);
+    Call<FixturesLeague> getFixturesCompetition(@Header("X-Auth-Token") String auth_token,@Path("id_competition") int idCompetition);
 }

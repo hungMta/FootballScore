@@ -35,7 +35,7 @@ public class FixturesLeague {
     }
 
     public void getFixturesLeague(final int idLeague, final OnLoadFixturesLeagueListener onLoadFixturesLeagueListener) {
-        Call<FixturesLeague> call = ServiceGenerator.resquest(mContext, ServiceGenerator.TIMEOUT_LENGHT).getFixturesCompetition(idLeague);
+        Call<FixturesLeague> call = ServiceGenerator.resquest(mContext, ServiceGenerator.TIMEOUT_LENGHT).getFixturesCompetition(ServiceGenerator.AU_TOKEN,idLeague);
         call.enqueue(new Callback<FixturesLeague>() {
             @Override
             public void onResponse(Call<FixturesLeague> call, Response<FixturesLeague> response) {

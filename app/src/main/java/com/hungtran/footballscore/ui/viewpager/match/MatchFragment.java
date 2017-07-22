@@ -60,6 +60,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
         View view;
         view = inflater.inflate(R.layout.fragment_match, container, false);
         competition = (Competition) getArguments().getSerializable(BUNDLE_COMPETITION);
+        competition.setId(446);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyler_mathdays);
         recyclerMatch = (RecyclerView) view.findViewById(R.id.recyler_match);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_match_fragment);

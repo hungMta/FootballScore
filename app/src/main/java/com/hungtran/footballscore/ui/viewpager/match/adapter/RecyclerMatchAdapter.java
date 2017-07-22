@@ -44,7 +44,7 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM_MATCH) {
-            return new ItemMatch(View.inflate(mContext, R.layout.item_match_recycler, null));
+            return new ItemMatch(View.inflate(mContext, R.layout.item_match_2, null));
         } else {
             return new ItemLoadMore(View.inflate(mContext, R.layout.item_loadmore, null));
         }
@@ -53,11 +53,14 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemMatch) {
-//            ((ItemMatch) holder).txtHomeTeamName.setText(listMatch.get(position).getHomeTeamName());
-//            ((ItemMatch) holder).txtAwayTeamName.setText(listMatch.get(position).getAwayTeamName());
-//            ((ItemMatch) holder).txtStatus.setText(listMatch.get(position).getStatus());
-//            ((ItemMatch) holder).txtHomeScore.setText(listMatch.get(position).getResult().getGoalsHomeTeam());
-//            ((ItemMatch) holder).txtAwayScore.setText(listMatch.get(position).getResult().getGoalsAwayTeam());
+            ((ItemMatch) holder).txtHomeTeamName.setText(listMatch.get(position).getHomeTeamName());
+            ((ItemMatch) holder).txtAwayTeamName.setText(listMatch.get(position).getAwayTeamName());
+            ((ItemMatch) holder).txtStatus.setText(listMatch.get(position).getStatus());
+            if (String.valueOf(listMatch.get(position).getResult().getGoalsAwayTeam()) != null) {
+                ((ItemMatch) holder).txtAwayScore.setText(listMatch.get(position).getResult().getGoalsAwayTeam() + "");
+                ((ItemMatch) holder).txtHomeScore.setText(listMatch.get(position).getResult().getGoalsHomeTeam() + "");
+            }
+            ((ItemMatch) holder).txtStatus.setText(listMatch.get(position).getStatus());
         } else if (holder instanceof ItemLoadMore) {
 
         }
@@ -116,15 +119,15 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
 
         public ItemMatch(View itemView) {
             super(itemView);
-//            txtDate = (TextView) itemView.findViewById(R.id.txt_day_match);
-//            txtTime = (TextView) itemView.findViewById(R.id.txt_time_match);
-//            txtHomeTeamName = (TextView) itemView.findViewById(R.id.name_home_team);
-//            txtAwayTeamName = (TextView) itemView.findViewById(R.id.name_away_team);
-//            txtStatus = (TextView) itemView.findViewById(R.id.status);
-//            txtHomeScore = (TextView) itemView.findViewById(R.id.home_score);
-//            txtAwayScore = (TextView) itemView.findViewById(R.id.away_score);
-//            imgHomeTeam = (ImageView) itemView.findViewById(R.id.logo_home_team);
-//            imgAwayTeam = (ImageView) itemView.findViewById(R.id.logo_away_team);
+            txtDate = (TextView) itemView.findViewById(R.id.txt_day_match);
+            txtTime = (TextView) itemView.findViewById(R.id.txt_time_match);
+            txtHomeTeamName = (TextView) itemView.findViewById(R.id.name_home_team);
+            txtAwayTeamName = (TextView) itemView.findViewById(R.id.name_away_team);
+            txtStatus = (TextView) itemView.findViewById(R.id.status);
+            txtHomeScore = (TextView) itemView.findViewById(R.id.home_score);
+            txtAwayScore = (TextView) itemView.findViewById(R.id.away_score);
+            imgHomeTeam = (ImageView) itemView.findViewById(R.id.logo_home_team);
+            imgAwayTeam = (ImageView) itemView.findViewById(R.id.logo_away_team);
         }
     }
 

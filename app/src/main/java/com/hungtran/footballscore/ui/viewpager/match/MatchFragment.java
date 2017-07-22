@@ -46,6 +46,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
     private FixturesLeague fixturesLeague;
     private ProgressBar progressBar;
 
+
     public static MatchFragment newInstance(Competition compe) {
         matchFragment = new MatchFragment();
         Bundle bundle = new Bundle();
@@ -105,9 +106,9 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
 
     private void initRecyclerViewMatch() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        recyclerMatchAdapter = new RecyclerMatchAdapter(mContext, listMatchs, recyclerView, getActivity());
-        recyclerMatch.setHasFixedSize(false);
         recyclerMatch.setLayoutManager(layoutManager);
+        recyclerMatchAdapter = new RecyclerMatchAdapter(mContext, listMatchs, recyclerMatch, getActivity());
+        recyclerMatch.setHasFixedSize(false);
         recyclerMatch.setAdapter(recyclerMatchAdapter);
         recyclerMatchAdapter.setOnItemQuestionListener(this);
     }
@@ -145,17 +146,19 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
             });
         }
         for (int i = offset; i < offset + limit; i++) {
-            if (i >= listMatchs.size())
+            if (i >= fixturesLeague.getFixtures().size())
                 continue;
             listMatchs.add(fixturesLeague.getFixtures().get(i));
         }
         recyclerMatchAdapter.notifyDataSetChanged();
+        recyclerMatchAdapter.setLoaded();
         //swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onLoadFixturesLeagueSuccess(FixturesLeague fixturesLeague) {
-        Toast.makeText(mContext,"Load fixtures success!",Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(mContext, "Load fixtures success!", Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.GONE);
         this.fixturesLeague = fixturesLeague;
         for (int i = 0; i < 10; i++) {
@@ -167,20 +170,27 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
     @Override
     public void onLoadFixturesLeagueFail() {
         progressBar.setVisibility(View.GONE);
-        Toast.makeText(mContext,"Load fixtures failed!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Load fixtures failed!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLoadMoreQuestion(final int offset) {
         if (listMatchs.size() < fixturesLeague.getFixtures().size()) {
             listMatchs.add(null);
-            recyclerMatchAdapter.notifyItemInserted(listMatchs.size() - 1);
+
+            recyclerMatch.post(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerMatchAdapter.notifyItemInserted(listMatchs.size() - 1);
+                }
+            });
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    loadMoreMatch(5, offset);
+                    loadMoreMatch(10, offset);
                 }
-            }, 5000);
+            }, 3000);
         }
     }
 

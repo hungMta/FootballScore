@@ -2,6 +2,7 @@ package com.hungtran.footballscore.restBase;
 
 import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.modelApi.fixtures.FixturesLeague;
+import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
 
 import java.util.List;
 
@@ -20,5 +21,8 @@ public interface FootballApi {
     Call<List<Competition>> getCompetion(@Header("X-Auth-Token") String auth_token);
 
     @GET("/v1/competitions/{id_competition}/fixtures")
-    Call<FixturesLeague> getFixturesCompetition(@Header("X-Auth-Token") String auth_token,@Path("id_competition") int idCompetition);
+    Call<FixturesLeague> getFixturesCompetition(@Header("X-Auth-Token") String auth_token, @Path("id_competition") int idCompetition);
+
+    @GET("/v1/competitions/{id_league}/teams")
+    Call<LeagueTeam> getLeagueTeams(@Header("X-Auth-Token") String auth_token, @Path("id_league") int idLeague);
 }

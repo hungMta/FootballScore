@@ -8,15 +8,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.competition.Competition;
+import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
 import com.hungtran.footballscore.ui.home.HomeFragment;
 import com.hungtran.footballscore.ui.PremierLeague.PremierLeagueFragment;
 import com.hungtran.footballscore.ui.navigation.NavigationDrawerFragment;
+import com.hungtran.footballscore.utils.PreferentUtil;
+
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.OnFragmentDrawerListener {
+public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.OnFragmentDrawerListener, NavigationDrawerFragment.OnGetCompetitionListener, LeagueTeam.OnGetLeagueTeamsListener {
+
+    private static final String KEY_GET_LEAGUE_TEAM = "KEY_GET_LEAGUE_TEAM";
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment navigationDrawerFragment;
@@ -34,6 +42,38 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         setSupportActionBar(mToolbar);
         initFragmentNavigation();
         addFragmentHome();
+    }
+
+    @Override
+    public void onDrawerItemSelected(int position, Competition competition) {
+        displayView(position, competition);
+    }
+
+    @Override
+    public void onGetCompetitionSuccess(List<Competition> list) {
+        if (!PreferentUtil.newInstance(this).getBoolean(KEY_GET_LEAGUE_TEAM, false)) {
+            for (Competition competition : list) {
+                LeagueTeam.newInstance(this).getLeagueTeamFormServer(competition.getId(), this);
+            }
+        }
+        PreferentUtil.newInstance(this).putBoolean(KEY_GET_LEAGUE_TEAM, true);
+    }
+
+    @Override
+    public void onGetCompetitionFail() {
+        Toast.makeText(this, "Can't get data from server", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetLeagueTeamsSuccess(LeagueTeam leagueTeam) {
+        Gson gson = new Gson();
+        String json = gson.toJson(leagueTeam);
+        PreferentUtil.newInstance(this).putString(leagueTeam.get_links().getSelf().getHref(), json);
+    }
+
+    @Override
+    public void onGetLeagueTeamsFail() {
+
     }
 
     private void initFragmentNavigation() {
@@ -71,8 +111,5 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void onDrawerItemSelected(int position, Competition competition) {
-        displayView(position, competition);
-    }
+
 }

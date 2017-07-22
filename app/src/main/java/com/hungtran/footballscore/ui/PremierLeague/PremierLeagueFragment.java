@@ -1,5 +1,6 @@
 package com.hungtran.footballscore.ui.PremierLeague;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.competition.Competition;
+import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
 import com.hungtran.footballscore.ui.viewpager.MainViewPagerAdapter;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -19,16 +21,18 @@ import com.roughike.bottombar.OnTabSelectListener;
  * Created by Hung Tran on 28/06/2017.
  */
 
-public class PremierLeagueFragment extends Fragment {
+public class PremierLeagueFragment extends Fragment implements LeagueTeam.OnGetLeagueTeamsListener{
 
     private static final String BUNDLE_COMPETITION = "COMPETITION";
-
+    private static final String BUNDLE_LEAGUE_TEAM = "BUNDLE_LEAGUE_TEAM";
     private ViewPager viewPager;
     private MainViewPagerAdapter mainViewPagerAdapter;
     private View view;
     private BottomBar bottomBar;
     private static Competition competition;
+    private static LeagueTeam leagueTeam;
     private static PremierLeagueFragment premierLeagueFragment;
+    private Context mContext;
 
     public static PremierLeagueFragment newInstance(Competition compe) {
         premierLeagueFragment = new PremierLeagueFragment();
@@ -51,10 +55,10 @@ public class PremierLeagueFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        LeagueTeam.newInstance(mContext).getLeagueTeamFormServer(competition.getId(),this);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager_fragment);
         bottomBar = (BottomBar) view.findViewById(R.id.bottomBar);
         initViewPager();
-
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
@@ -72,6 +76,22 @@ public class PremierLeagueFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onGetLeagueTeamsSuccess(LeagueTeam leagueTeam) {
+
+    }
+
+    @Override
+    public void onGetLeagueTeamsFail() {
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     private void initViewPager() {
@@ -94,4 +114,6 @@ public class PremierLeagueFragment extends Fragment {
             }
         });
     }
+
+
 }

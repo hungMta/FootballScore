@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.fixtures.Match;
+import com.hungtran.footballscore.utils.TimeUtil;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
     private List<Match> listMatch;
     private Context mContext;
     private Activity activity;
-    private OnItemQuestionListener onItemQuestionListener;
+    private static OnItemQuestionListener onItemQuestionListener;
     private int totalItemCount;
     private int lastVisibleItem;
     private boolean isLoading;
@@ -56,6 +57,8 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
             ((ItemMatch) holder).txtHomeTeamName.setText(listMatch.get(position).getHomeTeamName());
             ((ItemMatch) holder).txtAwayTeamName.setText(listMatch.get(position).getAwayTeamName());
             ((ItemMatch) holder).txtStatus.setText(listMatch.get(position).getStatus());
+            ((ItemMatch)holder).txtDate.setText(TimeUtil.newInstace(mContext).getDay(listMatch.get(position).getDate()));
+            ((ItemMatch)holder).txtTime.setText(TimeUtil.newInstace(mContext).getTime(listMatch.get(position).getDate()));
             if (String.valueOf(listMatch.get(position).getResult().getGoalsAwayTeam()) != null) {
                 ((ItemMatch) holder).txtAwayScore.setText(listMatch.get(position).getResult().getGoalsAwayTeam() + "");
                 ((ItemMatch) holder).txtHomeScore.setText(listMatch.get(position).getResult().getGoalsHomeTeam() + "");
@@ -91,7 +94,7 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 linearLayoutManager.findLastVisibleItemPosition();
-                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold) && totalItemCount >= 5) {
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold) && totalItemCount >= 10) {
                     if (onItemQuestionListener != null) {
                         isLoading = true;
                         onItemQuestionListener.onLoadMoreQuestion(totalItemCount);
@@ -146,8 +149,8 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
 
     }
 
-    public void setOnItemQuestionListener(OnItemQuestionListener listener) {
-        this.onItemQuestionListener = listener;
+    public static void setOnItemQuestionListener(OnItemQuestionListener listener) {
+        onItemQuestionListener = listener;
     }
 
 }

@@ -15,6 +15,7 @@ import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -28,6 +29,7 @@ public class ServiceGenerator {
     public static final String AU_TOKEN = "5200cfe1df6048f5bf0f508cf1902774";
 
     private static final String BASE_URL = "http://api.football-data.org";
+    private static final String BASE_UPLOAD_LOGO = "https://upload.wikimedia.org";
     private static FootballApi footballApi;
     private static OkHttpClient.Builder httpClient;
     private static Retrofit.Builder builder;
@@ -51,6 +53,22 @@ public class ServiceGenerator {
         retrofit = builder.client(httpClient.build()).build();
         footballApi = retrofit.create(FootballApi.class);
         return footballApi;
+    }
+
+    public static FootballApi downloadImage(int timeOut){
+
+        if (footballApi == null) {
+            builder = new Retrofit.Builder().baseUrl(BASE_UPLOAD_LOGO).addConverterFactory(BitmapConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create());
+            httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        }
+        httpClient = new OkHttpClient.Builder().connectTimeout(timeOut, TimeUnit.SECONDS).readTimeout(timeOut, TimeUnit.SECONDS).writeTimeout(timeOut, TimeUnit.SECONDS);
+        httpClient.addInterceptor(httpLoggingInterceptor);
+        retrofit = builder.client(httpClient.build()).build();
+        footballApi = retrofit.create(FootballApi.class);
+        return retrofit.create(FootballApi.class);
     }
 
     private static class AuthenticationInterceptor implements Interceptor {

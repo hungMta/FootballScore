@@ -1,6 +1,7 @@
 package com.hungtran.footballscore.utils;
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,10 +32,40 @@ public class CacheUtil {
         mContext = context;
         if (cacheUtil == null) {
             cacheUtil = new CacheUtil();
+            initFolderLogo();
         }
         return cacheUtil;
     }
 
+    public CacheUtil() {
+        File myDirectory = new File(Environment.getExternalStorageDirectory(), "footballSocre/logo");
+        if (!myDirectory.exists()) {
+            myDirectory.mkdirs();
+        }
+    }
+
+
+    public static void initFolderLogo() {
+        File myDirectory = new File(Environment.getExternalStorageDirectory(), "footballSocre/logo");
+        if (!myDirectory.exists()) {
+            myDirectory.mkdirs();
+        }
+    }
+
+    public boolean checkFolderEmpty() {
+        File directory = new File("footballSocre/logo/");
+        File[] contents = directory.listFiles();
+        // the directory file is not really a directory..
+        if (contents == null) {
+            return false;
+        }
+        // Folder is empty
+        else if (contents.length == 0) {
+            return false;
+        }
+        // Folder contains files
+        return true;
+    }
 
     public synchronized static boolean writeFileText(String fileName, String content) {
         FileOutputStream outputStream = null;
@@ -47,13 +78,13 @@ public class CacheUtil {
             bufferedWriter = new BufferedWriter(outputStreamWriter);
             bufferedWriter.write(content);
             success = true;
-            Logg.debug(mContext.getClass()," writeFileText success");
+            Logg.debug(mContext.getClass(), " writeFileText success");
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-            Logg.error(mContext.getClass(), "writeFileText " +  ex.toString());
+            Logg.error(mContext.getClass(), "writeFileText " + ex.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            Logg.error(mContext.getClass(), "writeFileText " +  e.toString());
+            Logg.error(mContext.getClass(), "writeFileText " + e.toString());
         } finally {
             try {
                 bufferedWriter.close();
@@ -97,7 +128,7 @@ public class CacheUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Logg.error(mContext.getClass(), "saveCache " + e.toString() );
+            Logg.error(mContext.getClass(), "saveCache " + e.toString());
         }
         return false;
     }

@@ -27,7 +27,7 @@ public class LeagueTeam {
 
     public static LeagueTeam newInstance(Context context) {
         mContext = context;
-        if (leagueTeam != null) {
+        if (leagueTeam == null) {
             leagueTeam = new LeagueTeam();
         }
         return leagueTeam;

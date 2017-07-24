@@ -12,7 +12,11 @@ import android.widget.TextView;
 
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.fixtures.Match;
+import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
+import com.hungtran.footballscore.modelApi.leagueTeam.TeamField.Team;
+import com.hungtran.footballscore.utils.ImageUtil;
 import com.hungtran.footballscore.utils.TimeUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -33,11 +37,13 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
     private int lastVisibleItem;
     private boolean isLoading;
     private int visibleThreshold = 1;
+    private LeagueTeam leagueTeam;
 
-    public RecyclerMatchAdapter(Context context, final List<Match> listMatch, RecyclerView recyclerView, Activity activity) {
+    public RecyclerMatchAdapter(Context context, final List<Match> listMatch, RecyclerView recyclerView, Activity activity, LeagueTeam leagueTeam) {
         this.mContext = context;
         this.listMatch = listMatch;
         this.activity = activity;
+        this.leagueTeam = leagueTeam;
         initOnScrollRecyclerView(recyclerView);
     }
 
@@ -57,8 +63,16 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
             ((ItemMatch) holder).txtHomeTeamName.setText(listMatch.get(position).getHomeTeamName());
             ((ItemMatch) holder).txtAwayTeamName.setText(listMatch.get(position).getAwayTeamName());
             ((ItemMatch) holder).txtStatus.setText(listMatch.get(position).getStatus());
-            ((ItemMatch)holder).txtDate.setText(TimeUtil.newInstace(mContext).getDay(listMatch.get(position).getDate()));
-            ((ItemMatch)holder).txtTime.setText(TimeUtil.newInstace(mContext).getTime(listMatch.get(position).getDate()));
+            ((ItemMatch) holder).txtDate.setText(TimeUtil.newInstace(mContext).getDay(listMatch.get(position).getDate()));
+            ((ItemMatch) holder).txtTime.setText(TimeUtil.newInstace(mContext).getTime(listMatch.get(position).getDate()));
+            Team home = getTeams(listMatch.get(position).get_links().getHomeTeam().getHref());
+            Team away = getTeams(listMatch.get(position).get_links().getAwayTeam().getHref());
+            if (home != null) {
+               ImageUtil.newInstance(mContext).getImageFormUrl(home.getCrestUrl(), ((ItemMatch) holder).imgHomeTeam);
+            }
+            if (away != null) {
+                ImageUtil.newInstance(mContext).getImageFormUrl(away.getCrestUrl(), ((ItemMatch) holder).imgAwayTeam);
+            }
             if (String.valueOf(listMatch.get(position).getResult().getGoalsAwayTeam()) != null) {
                 ((ItemMatch) holder).txtAwayScore.setText(listMatch.get(position).getResult().getGoalsAwayTeam() + "");
                 ((ItemMatch) holder).txtHomeScore.setText(listMatch.get(position).getResult().getGoalsHomeTeam() + "");
@@ -106,6 +120,15 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
 
     public void setLoaded() {
         isLoading = false;
+    }
+
+    private Team getTeams(String selfUrl) {
+        for (Team team : leagueTeam.getTeams()) {
+            if (team.get_links().getSelf().getHref().equals(selfUrl)) {
+                return team;
+            }
+        }
+        return null;
     }
 
     private static class ItemMatch extends RecyclerView.ViewHolder {

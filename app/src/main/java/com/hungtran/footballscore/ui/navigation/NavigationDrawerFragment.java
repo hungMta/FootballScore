@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import com.google.gson.Gson;
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.competition.Competition;
+import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
 import com.hungtran.footballscore.ui.navigation.adapter.NavigationDrawerAdapter;
 import com.hungtran.footballscore.utils.PreferentUtil;
 
@@ -30,7 +31,7 @@ import java.util.List;
  * Created by Hung Tran on 28/06/2017.
  */
 
-public class NavigationDrawerFragment extends Fragment implements Competition.OnLoadApiCompetitionsListener, NavigationDrawerAdapter.OnItemNavigationClickListener {
+public class NavigationDrawerFragment extends Fragment implements Competition.OnLoadApiCompetitionsListener, NavigationDrawerAdapter.OnItemNavigationClickListener{
 
     private static final String KEY_COMPETITION = "COMPETITION";
 
@@ -41,6 +42,8 @@ public class NavigationDrawerFragment extends Fragment implements Competition.On
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private static OnFragmentDrawerListener onFragmentDrawerListener;
+    private static LeagueTeam leagueTeam;
+    private static OnGetCompetitionListener onGetCompetitionListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,12 +74,16 @@ public class NavigationDrawerFragment extends Fragment implements Competition.On
     @Override
     public void onLoadSuccessApiCompetitions(List<Competition> competitionList) {
         navigationDrawerAdapter.notifyChange(competitionList);
+        if (onGetCompetitionListener != null){
+            onGetCompetitionListener.onGetCompetitionSuccess(competitionList);
+        }
     }
 
     @Override
     public void onLoadFailedApiCompetitions(String message, int errorCode) {
 
     }
+
 
     @Override
     public void onItemNavigationClick(int position, Competition competition) {
@@ -129,10 +136,10 @@ public class NavigationDrawerFragment extends Fragment implements Competition.On
         });
     }
 
-    public static interface ClickListener {
-        public void onClick(View view, int position);
+    public interface ClickListener {
+        void onClick(View view, int position);
 
-        public void onLongClick(View view, int position);
+        void onLongClick(View view, int position);
     }
 
     static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
@@ -187,5 +194,14 @@ public class NavigationDrawerFragment extends Fragment implements Competition.On
         onFragmentDrawerListener = listener;
     }
 
+    public interface OnGetCompetitionListener {
+        void onGetCompetitionSuccess(List<Competition> list);
+
+        void onGetCompetitionFail();
+    }
+
+    public static void setOnGetCompetitionListener(OnGetCompetitionListener listener) {
+        onGetCompetitionListener = listener;
+    }
 
 }

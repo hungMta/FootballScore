@@ -56,13 +56,13 @@ public class Competition implements Serializable {
      * call api to get list available competitions
      */
     public void getListCompetition(final OnLoadApiCompetitionsListener onLoadApiCompetitionsListener) {
-        Call<List<Competition>> call = ServiceGenerator.resquest(mContext, ServiceGenerator.TIMEOUT_SHORT).getCompetion();
+        Call<List<Competition>> call = ServiceGenerator.resquest(mContext, ServiceGenerator.TIMEOUT_SHORT).getCompetion(ServiceGenerator.AU_TOKEN);
         call.enqueue(new Callback<List<Competition>>() {
             @Override
             public void onResponse(Call<List<Competition>> call, Response<List<Competition>> response) {
                 if (response.isSuccessful()) {
                     onLoadApiCompetitionsListener.onLoadSuccessApiCompetitions(response.body());
-                    CacheUtil.newInstance(mContext).saveCache(response.body().toString(), CacheUtil.FILE_NAME_COMPETITION);
+//                    CacheUtil.newInstance(mContext).saveCache(response.body().toString(), CacheUtil.FILE_NAME_COMPETITION);
                 }
             }
 

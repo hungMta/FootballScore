@@ -1,7 +1,11 @@
 package com.hungtran.footballscore.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
@@ -19,6 +23,7 @@ import com.google.gson.Gson;
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
+import com.hungtran.footballscore.modelApi.leagueTeam.TeamField.Team;
 import com.hungtran.footballscore.restBase.ServiceGenerator;
 import com.hungtran.footballscore.ui.home.HomeFragment;
 import com.hungtran.footballscore.ui.PremierLeague.PremierLeagueFragment;
@@ -27,14 +32,27 @@ import com.hungtran.footballscore.utils.CacheUtil;
 import com.hungtran.footballscore.utils.Logg;
 import com.hungtran.footballscore.utils.PreferentUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
+
+import static android.R.attr.bitmap;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.OnFragmentDrawerListener, NavigationDrawerFragment.OnGetCompetitionListener, LeagueTeam.OnGetLeagueTeamsListener {
@@ -49,24 +67,52 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     private HomeFragment homeFragment;
     private PremierLeagueFragment leagueFragment;
     private ProgressDialog dialog;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CacheUtil.newInstance(this);
+        mContext = this;
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true); // ----> enable use svg icon
         NavigationDrawerFragment.setOnGetCompetitionListener(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-         dialog = ProgressDialog.show(this, "", getString(R.string.prepare_data), true);
-         dialog.show();
+        dialog = ProgressDialog.show(this, "", getString(R.string.prepare_data), true);
+        dialog.show();
         initFragmentNavigation();
         addFragmentHome();
+        Call<ResponseBody> call = ServiceGenerator.resquest(mContext,ServiceGenerator.TIMEOUT_SHORT)
+                .downloadLogo("https://upload.wikimedia.org/wikipedia/commons/e/e8/Svg_example3.svg");
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                copyInputStreamToFile(bm);
+            }
 
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
+            }
+        });
     }
 
+    private void copyInputStreamToFile(Bitmap bm) {
+       // Bitmap bm = BitmapFactory.decodeStream(in);
+        FileOutputStream outputStream;
+        File f;
+        try {
+            f = new File(CacheUtil.FILE_PATH_LOGO + "logo.jpg");
+            outputStream = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            Logg.debug(getClass(), "save success");
+        } catch (Throwable e) {
+            Logg.debug(getClass(), "save fail");
+        }
+    }
 
     @Override
     public void onDrawerItemSelected(int position, Competition competition) {
@@ -75,15 +121,15 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
 
     @Override
     public void onGetCompetitionSuccess(List<Competition> list) {
-        if (!PreferentUtil.newInstance(this).getBoolean(KEY_GET_LEAGUE_TEAM, false)) {
-            for (Competition competition : list) {
-                LeagueTeam.newInstance(this).getLeagueTeamFormServer(competition.getId(), this);
-            }
-        }
-        PreferentUtil.newInstance(this).putBoolean(KEY_GET_LEAGUE_TEAM, true);
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
+        if (!PreferentUtil.newInstance(this).getBoolean(KEY_GET_LEAGUE_TEAM, false)) {
+            for (Competition competition : list) {
+                LeagueTeam.newInstance(mContext).getLeagueTeamFormServer(competition.getId(), this);
+            }
+        }
+        PreferentUtil.newInstance(this).putBoolean(KEY_GET_LEAGUE_TEAM, true);
     }
 
     @Override
@@ -96,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         Gson gson = new Gson();
         String json = gson.toJson(leagueTeam);
         PreferentUtil.newInstance(this).putString(leagueTeam.get_links().getSelf().getHref(), json);
+//        downloadLogo();
     }
 
     @Override
@@ -138,16 +185,46 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         fragmentTransaction.commit();
     }
 
-    private void downloadLogo() {
-
-    }
-
-    private void checkIsDownloadedLogo() {
-        boolean isDownloaded = CacheUtil.newInstance(this).checkFolderEmpty();
-        if (!isDownloaded) {
-
-        }
-    }
+//    private void downloadLogo() {
+//        dialog = ProgressDialog.show(this, "", getString(R.string.prepare_data));
+//        dialog.show();
+////        http://api.football-data.org/v1/competitions/445/teams
+//        Gson gson = new Gson();
+//        OkHttpClient client = new OkHttpClient();
+//        LeagueTeam leagueTeam = gson.fromJson(PreferentUtil.newInstance(this).getString("http://api.football-data.org/v1/competitions/445/teams", ""), LeagueTeam.class);
+//        for (final Team team : leagueTeam.getTeams()) {
+//            Request request = new Request.Builder()
+//                    .url(team.getCrestUrl())
+//                    .build();
+//            client.newCall(request).enqueue(new okhttp3.Callback() {
+//                @Override
+//                public void onFailure(okhttp3.Call call, IOException e) {
+//
+//                }
+//
+//                @Override
+//                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                    response.body().byteStream(); // Read the data from the stream
+//                    Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+//                    CacheUtil.newInstance(mContext).saveLogoBitmap(bmp, CacheUtil.FILE_PATH_LOGO, team.getCrestUrl(), new CacheUtil.SaveImageToDeviceListener() {
+//                        @Override
+//                        public void onComplete() {
+//                            if (dialog.isShowing()){
+//                                dialog.dismiss();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFail(Throwable e) {
+//                            if (dialog.isShowing()){
+//                                dialog.dismiss();
+//                            }
+//                        }
+//                    });
+//                }
+//            });
+//        }
+//    }
 
 
 }

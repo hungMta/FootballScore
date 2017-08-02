@@ -4,13 +4,14 @@ import com.hungtran.footballscore.modelApi.fixtures.MatchField.HeadToHead;
 import com.hungtran.footballscore.modelApi.fixtures.MatchField.Link;
 import com.hungtran.footballscore.modelApi.fixtures.MatchField.Result;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Hung Tran on 7/21/2017.
  */
 
-public class Match {
+public class Match implements Serializable {
 
     private Link _links;
     private Result result;

@@ -195,7 +195,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
                 public void run() {
                     loadMoreMatch(10, offset);
                 }
-            }, 3000);
+            }, 1000);
         }
     }
 

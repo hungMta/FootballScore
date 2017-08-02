@@ -6,6 +6,7 @@ import com.hungtran.footballscore.modelApi.leagueTeam.TeamField.Link;
 import com.hungtran.footballscore.modelApi.leagueTeam.TeamField.Team;
 import com.hungtran.footballscore.restBase.ServiceGenerator;
 
+import java.io.Serializable;
 import java.util.List;
 
 import retrofit2.Call;
@@ -16,7 +17,7 @@ import retrofit2.Response;
  * Created by Hung Tran on 7/22/2017.
  */
 
-public class LeagueTeam {
+public class LeagueTeam implements Serializable {
 
     private static transient LeagueTeam leagueTeam;
     private static transient Context mContext;

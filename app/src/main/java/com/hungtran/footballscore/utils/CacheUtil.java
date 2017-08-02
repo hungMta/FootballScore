@@ -1,7 +1,10 @@
 package com.hungtran.footballscore.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Environment;
+import android.os.Looper;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,6 +28,7 @@ import java.util.List;
 
 public class CacheUtil {
     public static final String FILE_NAME_COMPETITION = "/sdcard/competition.txt";
+    public static final String FILE_PATH_LOGO = Environment.getExternalStorageDirectory() + File.separator + "footballSocre/logo/";
     private static Context mContext;
     private static CacheUtil cacheUtil;
 
@@ -67,6 +71,35 @@ public class CacheUtil {
         return true;
     }
 
+    public synchronized void saveLogoBitmap(final Bitmap bm, final String filePath, final String fileName,final SaveImageToDeviceListener saveImageToDeviceListener) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FileOutputStream outputStream;
+                File f;
+                try {
+                    Looper.prepare();
+                    f = new File(filePath + "logo");
+                    outputStream = new FileOutputStream(f);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                    saveImageToDeviceListener.onComplete();
+                    Logg.debug(getClass(), "save success");
+                } catch (Throwable e) {
+                    saveImageToDeviceListener.onFail(e);
+                }
+            }
+        });
+        thread.start();
+    }
+
+    public interface SaveImageToDeviceListener {
+
+        void onComplete();
+
+        void onFail(Throwable e);
+    }
     public synchronized static boolean writeFileText(String fileName, String content) {
         FileOutputStream outputStream = null;
         OutputStreamWriter outputStreamWriter = null;

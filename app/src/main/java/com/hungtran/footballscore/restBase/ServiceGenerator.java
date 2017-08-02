@@ -38,7 +38,7 @@ public class ServiceGenerator {
 
     public static FootballApi resquest(Context mContex, int timeOut) {
         if (footballApi == null) {
-            builder = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create());
+            builder = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).addConverterFactory(BitmapConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create());
             httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -55,21 +55,22 @@ public class ServiceGenerator {
         return footballApi;
     }
 
-    public static FootballApi downloadImage(int timeOut){
+//    public static FootballApi downloadImage(int timeOut){
+//
+//        if (footballApi == null) {
+//            builder = new Retrofit.Builder().baseUrl(BASE_UPLOAD_LOGO).addConverterFactory(GsonConverterFactory.create());
+//            httpLoggingInterceptor = new HttpLoggingInterceptor();
+//            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+//            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+//            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        }
+//        httpClient = new OkHttpClient.Builder().connectTimeout(timeOut, TimeUnit.SECONDS).readTimeout(timeOut, TimeUnit.SECONDS).writeTimeout(timeOut, TimeUnit.SECONDS);
+//        httpClient.addInterceptor(httpLoggingInterceptor);
+//        retrofit = builder.client(httpClient.build()).build();
+//        footballApi = retrofit.create(FootballApi.class);
+//        return retrofit.create(FootballApi.class);
+//    }
 
-        if (footballApi == null) {
-            builder = new Retrofit.Builder().baseUrl(BASE_UPLOAD_LOGO).addConverterFactory(BitmapConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create());
-            httpLoggingInterceptor = new HttpLoggingInterceptor();
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        }
-        httpClient = new OkHttpClient.Builder().connectTimeout(timeOut, TimeUnit.SECONDS).readTimeout(timeOut, TimeUnit.SECONDS).writeTimeout(timeOut, TimeUnit.SECONDS);
-        httpClient.addInterceptor(httpLoggingInterceptor);
-        retrofit = builder.client(httpClient.build()).build();
-        footballApi = retrofit.create(FootballApi.class);
-        return retrofit.create(FootballApi.class);
-    }
 
     private static class AuthenticationInterceptor implements Interceptor {
         public String authToken;

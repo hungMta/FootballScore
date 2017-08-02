@@ -34,6 +34,5 @@ public interface FootballApi {
     Call<LeagueTeam> getLeagueTeams(@Header("X-Auth-Token") String auth_token, @Path("id_league") int idLeague);
 
     @GET
-    @Streaming
-    Call<ResponseBody> getLogo(@Url String filepath);
+    Call<ResponseBody> downloadLogo(@Url String filepath);
 }

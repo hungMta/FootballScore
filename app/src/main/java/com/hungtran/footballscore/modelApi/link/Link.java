@@ -5,11 +5,13 @@ import com.hungtran.footballscore.modelApi.link.field.LeagueTable;
 import com.hungtran.footballscore.modelApi.link.field.Seft;
 import com.hungtran.footballscore.modelApi.link.field.Teams;
 
+import java.io.Serializable;
+
 /**
  * Created by Hung Tran on 30/06/2017.
  */
 
-public class Link {
+public class Link implements Serializable {
 
     /**
      * link seft

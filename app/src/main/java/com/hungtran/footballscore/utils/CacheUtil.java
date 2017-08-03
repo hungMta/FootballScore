@@ -1,6 +1,10 @@
 package com.hungtran.footballscore.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
+import android.os.Looper;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +28,7 @@ import java.util.List;
 
 public class CacheUtil {
     public static final String FILE_NAME_COMPETITION = "/sdcard/competition.txt";
+    public static final String FILE_PATH_LOGO = Environment.getExternalStorageDirectory() + File.separator + "footballSocre/logo/";
     private static Context mContext;
     private static CacheUtil cacheUtil;
 
@@ -31,11 +36,70 @@ public class CacheUtil {
         mContext = context;
         if (cacheUtil == null) {
             cacheUtil = new CacheUtil();
+            initFolderLogo();
         }
         return cacheUtil;
     }
 
+    public CacheUtil() {
+        File myDirectory = new File(Environment.getExternalStorageDirectory(), "footballSocre/logo");
+        if (!myDirectory.exists()) {
+            myDirectory.mkdirs();
+        }
+    }
 
+
+    public static void initFolderLogo() {
+        File myDirectory = new File(Environment.getExternalStorageDirectory(), "footballSocre/logo");
+        if (!myDirectory.exists()) {
+            myDirectory.mkdirs();
+        }
+    }
+
+    public boolean checkFolderEmpty() {
+        File directory = new File("footballSocre/logo/");
+        File[] contents = directory.listFiles();
+        // the directory file is not really a directory..
+        if (contents == null) {
+            return false;
+        }
+        // Folder is empty
+        else if (contents.length == 0) {
+            return false;
+        }
+        // Folder contains files
+        return true;
+    }
+
+    public synchronized void saveLogoBitmap(final Bitmap bm, final String filePath, final String fileName,final SaveImageToDeviceListener saveImageToDeviceListener) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FileOutputStream outputStream;
+                File f;
+                try {
+                    Looper.prepare();
+                    f = new File(filePath + "logo");
+                    outputStream = new FileOutputStream(f);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                    saveImageToDeviceListener.onComplete();
+                    Logg.debug(getClass(), "save success");
+                } catch (Throwable e) {
+                    saveImageToDeviceListener.onFail(e);
+                }
+            }
+        });
+        thread.start();
+    }
+
+    public interface SaveImageToDeviceListener {
+
+        void onComplete();
+
+        void onFail(Throwable e);
+    }
     public synchronized static boolean writeFileText(String fileName, String content) {
         FileOutputStream outputStream = null;
         OutputStreamWriter outputStreamWriter = null;
@@ -47,13 +111,13 @@ public class CacheUtil {
             bufferedWriter = new BufferedWriter(outputStreamWriter);
             bufferedWriter.write(content);
             success = true;
-            Logg.debug(mContext.getClass()," writeFileText success");
+            Logg.debug(mContext.getClass(), " writeFileText success");
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-            Logg.error(mContext.getClass(), "writeFileText " +  ex.toString());
+            Logg.error(mContext.getClass(), "writeFileText " + ex.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            Logg.error(mContext.getClass(), "writeFileText " +  e.toString());
+            Logg.error(mContext.getClass(), "writeFileText " + e.toString());
         } finally {
             try {
                 bufferedWriter.close();
@@ -97,7 +161,7 @@ public class CacheUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Logg.error(mContext.getClass(), "saveCache " + e.toString() );
+            Logg.error(mContext.getClass(), "saveCache " + e.toString());
         }
         return false;
     }

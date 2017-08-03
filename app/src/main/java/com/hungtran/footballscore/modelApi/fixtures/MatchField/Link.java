@@ -5,11 +5,13 @@ import com.hungtran.footballscore.modelApi.fixtures.MatchField.LinkField.AwayTea
 import com.hungtran.footballscore.modelApi.fixtures.MatchField.LinkField.HomeTeam;
 import com.hungtran.footballscore.modelApi.fixtures.MatchField.LinkField.Self;
 
+import java.io.Serializable;
+
 /**
  * Created by Hung Tran on 7/21/2017.
  */
 
-public class Link {
+public class Link implements Serializable {
 
     private AwayTeam awayTeam;
     private Competition competition;

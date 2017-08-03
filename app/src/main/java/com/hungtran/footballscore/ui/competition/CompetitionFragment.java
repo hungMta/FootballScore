@@ -1,4 +1,4 @@
-package com.hungtran.footballscore.ui.PremierLeague;
+package com.hungtran.footballscore.ui.competition;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import com.roughike.bottombar.OnTabSelectListener;
  * Created by Hung Tran on 28/06/2017.
  */
 
-public class PremierLeagueFragment extends Fragment implements LeagueTeam.OnGetLeagueTeamsListener{
+public class CompetitionFragment extends Fragment {
 
     private static final String BUNDLE_COMPETITION = "COMPETITION";
     private static final String BUNDLE_LEAGUE_TEAM = "BUNDLE_LEAGUE_TEAM";
@@ -30,17 +30,17 @@ public class PremierLeagueFragment extends Fragment implements LeagueTeam.OnGetL
     private View view;
     private BottomBar bottomBar;
     private static Competition competition;
-    private static LeagueTeam leagueTeam;
-    private static PremierLeagueFragment premierLeagueFragment;
+    private static CompetitionFragment competitionFragment;
     private Context mContext;
+    private LeagueTeam leagueTeam;
 
-    public static PremierLeagueFragment newInstance(Competition compe) {
-        premierLeagueFragment = new PremierLeagueFragment();
+    public static CompetitionFragment newInstance(Competition compe) {
+        competitionFragment = new CompetitionFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(BUNDLE_COMPETITION, compe);
-        premierLeagueFragment.setArguments(bundle);
+        competitionFragment.setArguments(bundle);
 
-        return premierLeagueFragment;
+        return competitionFragment;
     }
 
 
@@ -55,7 +55,6 @@ public class PremierLeagueFragment extends Fragment implements LeagueTeam.OnGetL
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LeagueTeam.newInstance(mContext).getLeagueTeamFormServer(competition.getId(),this);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager_fragment);
         bottomBar = (BottomBar) view.findViewById(R.id.bottomBar);
         initViewPager();
@@ -75,16 +74,6 @@ public class PremierLeagueFragment extends Fragment implements LeagueTeam.OnGetL
                 }
             }
         });
-
-    }
-
-    @Override
-    public void onGetLeagueTeamsSuccess(LeagueTeam leagueTeam) {
-
-    }
-
-    @Override
-    public void onGetLeagueTeamsFail() {
 
     }
 

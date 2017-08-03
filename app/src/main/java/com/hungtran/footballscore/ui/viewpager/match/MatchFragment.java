@@ -14,12 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.modelApi.fixtures.FixturesLeague;
 import com.hungtran.footballscore.modelApi.fixtures.Match;
+import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
 import com.hungtran.footballscore.ui.viewpager.match.adapter.RecyclerMatchAdapter;
 import com.hungtran.footballscore.ui.viewpager.match.adapter.RecyclerMatchdaysAdapter;
+import com.hungtran.footballscore.utils.PreferentUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
     private List<Match> listMatchs = new ArrayList<>();
     private FixturesLeague fixturesLeague;
     private ProgressBar progressBar;
+    private LeagueTeam leagueTeam;
 
 
     public static MatchFragment newInstance(Competition compe) {
@@ -61,7 +65,6 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
         View view;
         view = inflater.inflate(R.layout.fragment_match, container, false);
         competition = (Competition) getArguments().getSerializable(BUNDLE_COMPETITION);
-        competition.setId(446);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyler_mathdays);
         recyclerMatch = (RecyclerView) view.findViewById(R.id.recyler_match);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_match_fragment);
@@ -71,6 +74,8 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Gson gson = new Gson();
+        leagueTeam = gson.fromJson(PreferentUtil.newInstance(mContext).getString(String.valueOf(competition.get_links().getTeams().getHref()), ""), LeagueTeam.class);
         RecyclerMatchdaysAdapter.SetOnItemMatchdaysClickListener(this);
         initRecyclerViewMatchdays();
         getFixtureLeague();
@@ -89,6 +94,13 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
             listMathdays.get(positition)[0] = 3;
         }
         recyclerMatchdaysAdapter.notifyDataSetchanged(listMathdays);
+        List<Match> list = new ArrayList<>();
+        for (Match match : listMatchs) {
+            if (match.getMatchday() == positition + 1) {
+                list.add(match);
+            }
+        }
+        recyclerMatchAdapter.notifyChange(list);
     }
 
     private void getFixtureLeague() {
@@ -104,10 +116,10 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
         recyclerView.setAdapter(recyclerMatchdaysAdapter);
     }
 
-    private void initRecyclerViewMatch() {
+    private void initRecyclerViewMatch(List<Match> listMatchs) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         recyclerMatch.setLayoutManager(layoutManager);
-        recyclerMatchAdapter = new RecyclerMatchAdapter(mContext, listMatchs, recyclerMatch, getActivity());
+        recyclerMatchAdapter = new RecyclerMatchAdapter(mContext, listMatchs, recyclerMatch, getActivity(), leagueTeam);
         recyclerMatch.setHasFixedSize(false);
         recyclerMatch.setAdapter(recyclerMatchAdapter);
         recyclerMatchAdapter.setOnItemQuestionListener(this);
@@ -145,6 +157,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
                 }
             });
         }
+
         for (int i = offset; i < offset + limit; i++) {
             if (i >= fixturesLeague.getFixtures().size())
                 continue;
@@ -161,10 +174,18 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
         Toast.makeText(mContext, "Load fixtures success!", Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.GONE);
         this.fixturesLeague = fixturesLeague;
-        for (int i = 0; i < 10; i++) {
-            listMatchs.add(fixturesLeague.getFixtures().get(i));
+        listMatchs = fixturesLeague.getFixtures();
+        List<Match> list = new ArrayList<>();
+        for (Match match : fixturesLeague.getFixtures()) {
+            if (match.getMatchday() == 1) {
+                list.add(match);
+            }
         }
-        initRecyclerViewMatch();
+//
+//        for (int i = 0; i < 10; i++) {
+//            listMatchs.add(fixturesLeague.getFixtures().get(i));
+//        }
+        initRecyclerViewMatch(list);
     }
 
     @Override
@@ -190,7 +211,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
                 public void run() {
                     loadMoreMatch(10, offset);
                 }
-            }, 3000);
+            }, 1000);
         }
     }
 

@@ -6,6 +6,7 @@ import com.hungtran.footballscore.modelApi.fixtures.MatchField.Link;
 import com.hungtran.footballscore.modelApi.link.field.Fixtures;
 import com.hungtran.footballscore.restBase.ServiceGenerator;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import retrofit2.Response;
  * Created by Hung Tran on 7/21/2017.
  */
 
-public class FixturesLeague {
+public class FixturesLeague implements Serializable {
 
     private transient static FixturesLeague fixturesLeague;
     private transient static Context mContext;

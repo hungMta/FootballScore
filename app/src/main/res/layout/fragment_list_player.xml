@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/item_player"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/grayLight"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/txt_stt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="stt" />
+
+        <TextView
+            android:id="@+id/txt_name_player"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:ellipsize="end"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
+            android:singleLine="true"
+            android:text="dasfasfdasfdasfdasfa" />
+
+        <TextView
+            android:id="@+id/txt_pos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="Position" />
+
+        <TextView
+            android:id="@+id/txt_number"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Num" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyler_list_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/item_player"></android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

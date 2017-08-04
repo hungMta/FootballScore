@@ -9,23 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"></android.support.v7.widget.RecyclerView>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_match"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyler_match"
+        android:layout_below="@+id/recyler_mathdays"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/recyler_mathdays">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyler_match"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
     <ProgressBar
         android:id="@+id/progressBar_match_fragment"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/size_progressbar"
+        android:layout_height="@dimen/size_progressbar"
         android:layout_centerInParent="true" />
 </RelativeLayout>

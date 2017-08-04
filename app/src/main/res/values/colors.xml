@@ -5,9 +5,14 @@
     <color name="colorAccent">#09AAA0</color>
     <color name="colorBottomBar">#CDB08F</color>
     <color name="colorWhite">#FAFAFA</color>
-    <color name="color">#FAFAFA</color>
+    <color name="colorFA">#FAFAFA</color>
     <color name="colorOrange">#fa8100</color>
     <color name="colorGreenDark">#058D34</color>
     <color name="colorYellowDark">#F5E307</color>
     <color name="colorOrangeDark">#CB500F</color>
+    <color name="grayLight">#d9d7d7</color>
+    <color name="blueLight">#42A5F5</color>
+    <color name="blueDark">#1976D2</color>
+    <color name="orangeLight">#FFA000</color>
+    <color name="pinkLight">#EF5350</color>
 </resources>

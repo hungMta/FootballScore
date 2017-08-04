@@ -31,7 +31,7 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
                 fragment = MatchFragment.newInstance(mCompetition);
                 break;
             case 1:
-                fragment = new LeagueTableFragment();
+                fragment = LeagueTableFragment.newInstance(mCompetition);
                 break;
             case 2:
                 fragment = new PersonalFragment();

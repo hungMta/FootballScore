@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true">
+
+    <LinearLayout
+        android:id="@+id/item_league_table"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/txt_stt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="1"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/img_logo_team"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_ball_four" />
+
+
+        <TextView
+            android:id="@+id/txt_team_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:ellipsize="end"
+            android:gravity="center|left"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:text="asdfasdfadsf" />
+
+
+        <TextView
+            android:id="@+id/txt_mp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/txt_w"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/txt_d"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/txt_l"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:text="0" />
+
+
+        <TextView
+            android:id="@+id/txt_pts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:text="0" />
+    </LinearLayout>
+</RelativeLayout>

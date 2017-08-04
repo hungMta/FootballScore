@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import com.google.gson.Gson;
 import com.hungtran.footballscore.R;
 import com.hungtran.footballscore.modelApi.competition.Competition;
+import com.hungtran.footballscore.modelApi.competition.ListCompetition;
 import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
 import com.hungtran.footballscore.ui.navigation.adapter.NavigationDrawerAdapter;
 import com.hungtran.footballscore.utils.PreferentUtil;
@@ -31,7 +32,7 @@ import java.util.List;
  * Created by Hung Tran on 28/06/2017.
  */
 
-public class NavigationDrawerFragment extends Fragment implements Competition.OnLoadApiCompetitionsListener, NavigationDrawerAdapter.OnItemNavigationClickListener{
+public class NavigationDrawerFragment extends Fragment implements ListCompetition.OnLoadApiCompetitionsListener, NavigationDrawerAdapter.OnItemNavigationClickListener{
 
     private static final String KEY_COMPETITION = "COMPETITION";
 
@@ -95,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment implements Competition.On
     private void initRecycler() {
         recyclerView.removeAllViews();
         navigationDrawerAdapter = new NavigationDrawerAdapter(mContext, null);
-        Competition.newInstance(mContext).getListCompetition(this);
+        ListCompetition.newInstance(mContext).getListCompetition(this);
         navigationDrawerAdapter.setOnItemNavigationClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         recyclerView.setHasFixedSize(false);

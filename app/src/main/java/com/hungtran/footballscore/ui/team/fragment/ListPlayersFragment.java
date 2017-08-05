@@ -18,9 +18,10 @@ import com.hungtran.footballscore.ui.team.fragment.adapter.RecyclerListPlayersAd
  * Created by Hung Tran on 8/4/2017.
  */
 
-public class ListPlayersFragment extends Fragment implements ListPlayers.OnGetListPlayersListener {
+public class ListPlayersFragment extends Fragment {
 
     private static final String BUNDLE_ID_TEAM = "BUNDLE_ID_TEAM";
+    private static final String BUNDLE_LIST_PLAYER = "BUNDLE_LIST_PLAYER";
     private static ListPlayersFragment listPlayersFragment;
     private PlayerInfoFragment playerInfoFragment;
     private static Context mContext;
@@ -29,20 +30,30 @@ public class ListPlayersFragment extends Fragment implements ListPlayers.OnGetLi
     private RecyclerView recyclerView;
     private ListPlayers listPlayers;
 
-    public static ListPlayersFragment newInstance(int idTeam) {
-        listPlayersFragment = new ListPlayersFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(BUNDLE_ID_TEAM, idTeam);
-        listPlayersFragment.setArguments(bundle);
+    public static ListPlayersFragment newInstance(int idTeam, ListPlayers listPlayers) {
+        if (listPlayersFragment == null) {
+            listPlayersFragment = new ListPlayersFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(BUNDLE_ID_TEAM, idTeam);
+            bundle.putSerializable(BUNDLE_LIST_PLAYER, listPlayers);
+            listPlayersFragment.setArguments(bundle);
+        }
         return listPlayersFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view;
         view = inflater.inflate(R.layout.fragment_list_player, container, false);
         idTeam = getArguments().getInt(BUNDLE_ID_TEAM, 0);
+        listPlayers = (ListPlayers) getArguments().getSerializable(BUNDLE_LIST_PLAYER);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyler_list_player);
         return view;
     }
@@ -50,7 +61,8 @@ public class ListPlayersFragment extends Fragment implements ListPlayers.OnGetLi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ListPlayers.newInstance(mContext).getListPlayers(idTeam, this);
+        initRecycler();
+        //  ListPlayers.newInstance(mContext).getListPlayers(idTeam, this);
     }
 
     @Override
@@ -60,15 +72,20 @@ public class ListPlayersFragment extends Fragment implements ListPlayers.OnGetLi
     }
 
     @Override
-    public void onGetListPlayersSuccess(ListPlayers list) {
-        this.listPlayers = list;
-        initRecycler();
+    public void onDetach() {
+        super.onDetach();
     }
 
-    @Override
-    public void onGetListPlayersFail() {
-
-    }
+//    @Override
+//    public void onGetListPlayersSuccess(ListPlayers list) {
+//        //    this.listPlayers = list;
+//
+//    }
+//
+//    @Override
+//    public void onGetListPlayersFail() {
+//
+//    }
 
     private void initRecycler() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);

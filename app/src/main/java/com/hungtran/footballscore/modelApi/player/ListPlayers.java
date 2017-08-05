@@ -7,6 +7,7 @@ import com.hungtran.footballscore.modelApi.player.feild.Link;
 import com.hungtran.footballscore.modelApi.player.feild.Player;
 import com.hungtran.footballscore.restBase.ServiceGenerator;
 
+import java.io.Serializable;
 import java.util.List;
 
 import retrofit2.Call;
@@ -17,7 +18,7 @@ import retrofit2.Response;
  * Created by Hung Tran on 8/5/2017.
  */
 
-public class ListPlayers {
+public class ListPlayers implements Serializable {
 
     private transient static ListPlayers listPlayers;
     private transient static Context mContext;

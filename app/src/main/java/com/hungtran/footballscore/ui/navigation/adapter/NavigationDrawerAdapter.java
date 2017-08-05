@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hungtran.footballscore.R;
@@ -35,10 +36,10 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((ItemView) holder).txtMenu.setText(competitionList.get(position).getCaption());
-        ((ItemView)holder).txtMenu.setOnClickListener(new View.OnClickListener() {
+        ((ItemView) holder).linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemNavigationClickListener.onItemNavigationClick(position,competitionList.get(position));
+                onItemNavigationClickListener.onItemNavigationClick(position, competitionList.get(position));
             }
         });
     }
@@ -48,7 +49,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter {
         return competitionList == null ? 0 : competitionList.size();
     }
 
-    public void notifyChange(List<Competition> list){
+    public void notifyChange(List<Competition> list) {
         this.competitionList = list;
         notifyDataSetChanged();
     }
@@ -56,18 +57,20 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter {
     private class ItemView extends RecyclerView.ViewHolder {
 
         public TextView txtMenu;
+        private LinearLayout linearLayout;
 
         public ItemView(View itemView) {
             super(itemView);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.layout_item_menu);
             txtMenu = (TextView) itemView.findViewById(R.id.title);
         }
     }
 
-    public interface OnItemNavigationClickListener{
+    public interface OnItemNavigationClickListener {
         void onItemNavigationClick(int pos, Competition competition);
     }
 
-    public  void setOnItemNavigationClickListener(OnItemNavigationClickListener listener){
+    public void setOnItemNavigationClickListener(OnItemNavigationClickListener listener) {
         onItemNavigationClickListener = listener;
     }
 

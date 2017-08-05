@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Stt"
+            android:textStyle="bold" />
+
+        <!--<ImageView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_weight="1"-->
+        <!--android:padding="5dp"-->
+        <!--/>-->
+
+        <TextView
+            android:id="@+id/txt_team_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:ellipsize="end"
+            android:gravity="center|left"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:text="Team" />
+
+        <TextView
+            android:id="@+id/txt_mp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:text="MP" />
+
+        <TextView
+            android:id="@+id/txt_w"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:text="W" />
+
+        <TextView
+            android:id="@+id/txt_d"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:text="D" />
+
+        <TextView
+            android:id="@+id/txt_l"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:text="L" />
+
+        <TextView
+            android:id="@+id/txt_gf"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="GF" />
+
+        <TextView
+            android:id="@+id/txt_ga"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:visibility="gone"
+            android:gravity="center"
+            android:text="GA" />
+
+        <TextView
+            android:id="@+id/txt_gd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="GD" />
+
+        <TextView
+            android:id="@+id/txt_pts"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:background="@color/grayLight"
+            android:text="PTS"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grayLight" />
+</LinearLayout>

@@ -3,5 +3,6 @@
 
     <dimen name="img_menu">40dp</dimen>
     <dimen name="width_navigation">280dp</dimen>
+    <dimen name="size_progressbar">20dp</dimen>
 
 </resources>

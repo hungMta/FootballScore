@@ -1,6 +1,5 @@
 package com.hungtran.footballscore.modelApi.fixtures.MatchField;
 
-import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.modelApi.fixtures.MatchField.LinkField.AwayTeam;
 import com.hungtran.footballscore.modelApi.fixtures.MatchField.LinkField.HomeTeam;
 import com.hungtran.footballscore.modelApi.fixtures.MatchField.LinkField.Self;

@@ -31,7 +31,7 @@ import java.util.List;
  * Created by Hung Tran on 02/07/2017.
  */
 
-public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.OnItemMatchdaysClickListener, FixturesLeague.OnLoadFixturesLeagueListener, RecyclerMatchAdapter.OnItemQuestionListener, SwipeRefreshLayout.OnRefreshListener {
+public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.OnItemMatchdaysClickListener, FixturesLeague.OnLoadFixturesLeagueListener, RecyclerMatchAdapter.OnItemQuestionListener {
 
     public static String BUNDLE_COMPETITION = "COMPETITION";
 
@@ -39,7 +39,6 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
     private RecyclerMatchdaysAdapter recyclerMatchdaysAdapter;
     private Context mContext;
     private LinearLayoutManager linearLayoutManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerMatch;
     private static Competition competition;
     private static MatchFragment matchFragment;
@@ -215,8 +214,4 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
         }
     }
 
-    @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
-    }
 }

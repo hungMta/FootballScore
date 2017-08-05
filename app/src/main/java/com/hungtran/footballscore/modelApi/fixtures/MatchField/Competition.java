@@ -1,27 +1,18 @@
-package com.hungtran.footballscore.modelApi.competition;
+package com.hungtran.footballscore.modelApi.fixtures.MatchField;
 
-import android.content.Context;
-import android.util.Log;
-
+import com.hungtran.footballscore.modelApi.link.*;
 import com.hungtran.footballscore.modelApi.link.Link;
-import com.hungtran.footballscore.restBase.ServiceGenerator;
-import com.hungtran.footballscore.utils.CacheUtil;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
- * available competitions for the current season.
+ * Created by Hung Tran on 8/4/2017.
  */
 
 public class Competition implements Serializable {
 
-    private Link _links;
+    private com.hungtran.footballscore.modelApi.link.Link _links;
 
     private int id;
 
@@ -40,7 +31,6 @@ public class Competition implements Serializable {
     private int numberOfGames;
 
     private Date lastUpdated;
-
 
     public Link get_links() {
         return _links;
@@ -121,5 +111,4 @@ public class Competition implements Serializable {
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-
 }

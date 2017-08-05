@@ -4,7 +4,10 @@ import android.graphics.Bitmap;
 
 import com.hungtran.footballscore.modelApi.competition.Competition;
 import com.hungtran.footballscore.modelApi.fixtures.FixturesLeague;
+import com.hungtran.footballscore.modelApi.leagueTable.LeagueTable;
 import com.hungtran.footballscore.modelApi.leagueTeam.LeagueTeam;
+import com.hungtran.footballscore.modelApi.player.ListPlayers;
+import com.hungtran.footballscore.modelApi.team.Team;
 
 import java.util.List;
 
@@ -35,4 +38,14 @@ public interface FootballApi {
 
     @GET
     Call<ResponseBody> downloadLogo(@Url String filepath);
+
+    @GET("/v1/competitions/{id_league}/leagueTable")
+    Call<LeagueTable> getLeagueTable(@Header("X-Auth-Token") String auth_token, @Path("id_league") int idLeague);
+
+    @GET("/v1/teams/{id_team}")
+    Call<Team> getTeamInfo(@Header("X-Auth-Token") String auth_token, @Path("id_team") int id_team);
+
+    @GET("/v1/teams/{id_team}/players")
+    Call<ListPlayers> getListPlayers(@Header("X-Auth-Token") String auth_token, @Path("id_team") int id_team);
+
 }

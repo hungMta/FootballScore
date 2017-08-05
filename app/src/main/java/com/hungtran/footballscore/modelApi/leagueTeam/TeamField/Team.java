@@ -1,10 +1,12 @@
 package com.hungtran.footballscore.modelApi.leagueTeam.TeamField;
 
+import java.io.Serializable;
+
 /**
  * Created by Hung Tran on 7/22/2017.
  */
 
-public class Team {
+public class Team implements Serializable {
 
     private Link _links;
     private String name;
@@ -60,4 +62,5 @@ public class Team {
     public void setCrestUrl(String crestUrl) {
         this.crestUrl = crestUrl;
     }
+
 }

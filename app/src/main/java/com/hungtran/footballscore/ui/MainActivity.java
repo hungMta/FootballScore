@@ -118,8 +118,11 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 fragment = CompetitionFragment.newInstance(competition);
                 break;
         }
-        getSupportActionBar().setTitle(competition.getCaption());
-
+        if (competition != null) {
+            getSupportActionBar().setTitle(competition.getCaption());
+        }else {
+            getSupportActionBar().setTitle(getString(R.string.home));
+        }
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container_body, fragment);

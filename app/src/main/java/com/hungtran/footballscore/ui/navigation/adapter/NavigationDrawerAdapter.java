@@ -35,7 +35,13 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((ItemView) holder).txtMenu.setText(competitionList.get(position).getCaption());
+        if (position == 0) {
+            ((ItemView) holder).txtMenu.setText(mContext.getString(R.string.home));
+            ((ItemView)holder).imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_home_black_24dp));
+        } else {
+            ((ItemView) holder).txtMenu.setText(competitionList.get(position).getCaption());
+            ((ItemView)holder).imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_send_black_24dp));
+        }
         ((ItemView) holder).linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,11 +64,13 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter {
 
         public TextView txtMenu;
         private LinearLayout linearLayout;
+        private ImageView imageView;
 
         public ItemView(View itemView) {
             super(itemView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.layout_item_menu);
             txtMenu = (TextView) itemView.findViewById(R.id.title);
+            imageView = (ImageView) itemView.findViewById(R.id.img_item_navigation);
         }
     }
 

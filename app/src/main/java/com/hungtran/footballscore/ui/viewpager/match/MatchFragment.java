@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +34,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
 
     public static String BUNDLE_COMPETITION = "COMPETITION";
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewMatchdays;
     private RecyclerMatchdaysAdapter recyclerMatchdaysAdapter;
     private Context mContext;
     private LinearLayoutManager linearLayoutManager;
@@ -64,7 +63,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
         View view;
         view = inflater.inflate(R.layout.fragment_match, container, false);
         competition = (Competition) getArguments().getSerializable(BUNDLE_COMPETITION);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyler_mathdays);
+        recyclerViewMatchdays = (RecyclerView) view.findViewById(R.id.recyler_mathdays);
         recyclerMatch = (RecyclerView) view.findViewById(R.id.recyler_match);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_match_fragment);
         return view;
@@ -93,6 +92,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
             listMathdays.get(positition)[0] = 3;
         }
         recyclerMatchdaysAdapter.notifyDataSetchanged(listMathdays);
+
         List<Match> list = new ArrayList<>();
         for (Match match : listMatchs) {
             if (match.getMatchday() == positition + 1) {
@@ -110,9 +110,10 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
         getListMatchsDay();
         linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         recyclerMatchdaysAdapter = new RecyclerMatchdaysAdapter(mContext, listMathdays);
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(recyclerMatchdaysAdapter);
+        recyclerViewMatchdays.setHasFixedSize(false);
+        recyclerViewMatchdays.setLayoutManager(linearLayoutManager);
+        recyclerViewMatchdays.setAdapter(recyclerMatchdaysAdapter);
+        recyclerViewMatchdays.scrollToPosition(competition.getCurrentMatchday() - 1);
     }
 
     private void initRecyclerViewMatch(List<Match> listMatchs) {
@@ -142,6 +143,7 @@ public class MatchFragment extends Fragment implements RecyclerMatchdaysAdapter.
             }
         }
     }
+
 
     private void loadMoreMatch(int limit, int offset) {
         if (listMatchs.size() == 1 && listMatchs.get(0) == null) {

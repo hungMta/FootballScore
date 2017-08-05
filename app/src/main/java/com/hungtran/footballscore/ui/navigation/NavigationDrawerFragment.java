@@ -74,9 +74,12 @@ public class NavigationDrawerFragment extends Fragment implements ListCompetitio
 
     @Override
     public void onLoadSuccessApiCompetitions(List<Competition> competitionList) {
-        navigationDrawerAdapter.notifyChange(competitionList);
+        List<Competition> list = new ArrayList<>();
+        list.add(null);
+        list.addAll(competitionList);
+        navigationDrawerAdapter.notifyChange(list);
         if (onGetCompetitionListener != null){
-            onGetCompetitionListener.onGetCompetitionSuccess(competitionList);
+            onGetCompetitionListener.onGetCompetitionSuccess(list);
         }
     }
 

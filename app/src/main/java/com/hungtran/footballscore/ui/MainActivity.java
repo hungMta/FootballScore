@@ -67,12 +67,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        if (!PreferentUtil.newInstance(this).getBoolean(KEY_GET_LEAGUE_TEAM, false)) {
-            for (Competition competition : list) {
-                LeagueTeam.newInstance(mContext).getLeagueTeamFormServer(competition.getId(), this);
-            }
-        }
-        PreferentUtil.newInstance(this).putBoolean(KEY_GET_LEAGUE_TEAM, true);
+//        if (!PreferentUtil.newInstance(this).getBoolean(KEY_GET_LEAGUE_TEAM, false)) {
+//            for (Competition competition : list) {
+//                LeagueTeam.newInstance(mContext).getLeagueTeamFormServer(competition.getId(), this);
+//            }
+//        }
+//        PreferentUtil.newInstance(this).putBoolean(KEY_GET_LEAGUE_TEAM, true);
+
     }
 
     @Override
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         Gson gson = new Gson();
         String json = gson.toJson(leagueTeam);
         PreferentUtil.newInstance(this).putString(leagueTeam.get_links().getSelf().getHref(), json);
-//        downloadLogo();
     }
 
     @Override
@@ -128,47 +128,4 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         fragmentTransaction.replace(R.id.container_body, fragment);
         fragmentTransaction.commit();
     }
-
-//    private void downloadLogo() {
-//        dialog = ProgressDialog.show(this, "", getString(R.string.prepare_data));
-//        dialog.show();
-////        http://api.football-data.org/v1/competitions/445/teams
-//        Gson gson = new Gson();
-//        OkHttpClient client = new OkHttpClient();
-//        LeagueTeam leagueTeam = gson.fromJson(PreferentUtil.newInstance(this).getString("http://api.football-data.org/v1/competitions/445/teams", ""), LeagueTeam.class);
-//        for (final Team team : leagueTeam.getTeams()) {
-//            Request request = new Request.Builder()
-//                    .url(team.getCrestUrl())
-//                    .build();
-//            client.newCall(request).enqueue(new okhttp3.Callback() {
-//                @Override
-//                public void onFailure(okhttp3.Call call, IOException e) {
-//
-//                }
-//
-//                @Override
-//                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-//                    response.body().byteStream(); // Read the data from the stream
-//                    Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-//                    CacheUtil.newInstance(mContext).saveLogoBitmap(bmp, CacheUtil.FILE_PATH_LOGO, team.getCrestUrl(), new CacheUtil.SaveImageToDeviceListener() {
-//                        @Override
-//                        public void onComplete() {
-//                            if (dialog.isShowing()){
-//                                dialog.dismiss();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFail(Throwable e) {
-//                            if (dialog.isShowing()){
-//                                dialog.dismiss();
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//        }
-//    }
-
-
 }

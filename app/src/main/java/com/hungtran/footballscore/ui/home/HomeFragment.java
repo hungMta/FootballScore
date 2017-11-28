@@ -34,11 +34,11 @@ public class HomeFragment extends Fragment implements DatePickerDialog.OnDateSet
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Calendar now = Calendar.getInstance();
-        dpd = new DatePickerDialog(mContext, this,
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH));
-        dpd.show();
+//        dpd = new DatePickerDialog(mContext, this,
+//                now.get(Calendar.YEAR),
+//                now.get(Calendar.MONTH),
+//                now.get(Calendar.DAY_OF_MONTH));
+//        dpd.show();
     }
 
     @Override
@@ -49,9 +49,9 @@ public class HomeFragment extends Fragment implements DatePickerDialog.OnDateSet
 
     @Override
     public void onDetach() {
-        if (dpd.isShowing()){
-            dpd.dismiss();
-        }
+//        if (dpd.isShowing()){
+//            dpd.dismiss();
+//        }
         super.onDetach();
     }
 

@@ -1,6 +1,8 @@
 package com.hungtran.footballscore.ui.viewpager.leagueTable.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.PictureDrawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.StreamEncoder;
+import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
+import com.caverock.androidsvg.SVG;
 import com.hungtran.footballscore.R;
+import com.hungtran.footballscore.core.svg.SvgDecoder;
+import com.hungtran.footballscore.core.svg.SvgDrawableTranscoder;
+import com.hungtran.footballscore.core.svg.SvgSoftwareLayerSetter;
 import com.hungtran.footballscore.modelApi.leagueTable.LeagueTable;
 import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
 
 /**
  * Created by Hung Tran on 8/4/2017.
@@ -21,10 +34,23 @@ public class RecyclerLeagueTableAdapter extends RecyclerView.Adapter {
     private LeagueTable leagueTable;
     private Context mContext;
     private static OnItemClickListener onItemClickListener;
+    private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
     public RecyclerLeagueTableAdapter(LeagueTable leagueTable, Context context) {
         this.leagueTable = leagueTable;
         this.mContext = context;
+        requestBuilder = Glide.with(mContext)
+                .using(Glide.buildStreamModelLoader(Uri.class, mContext), InputStream.class)
+                .from(Uri.class)
+                .as(SVG.class)
+                .transcode(new SvgDrawableTranscoder(), PictureDrawable.class)
+                .sourceEncoder(new StreamEncoder())
+                .cacheDecoder(new FileToStreamDecoder<SVG>(new SvgDecoder()))
+                .decoder(new SvgDecoder())
+                .placeholder(R.drawable.ic_icon_ball)
+                .error(R.drawable.ic_icon_ball)
+                .animate(android.R.anim.fade_in)
+                .listener(new SvgSoftwareLayerSetter<Uri>());
     }
 
     @Override
@@ -42,19 +68,29 @@ public class RecyclerLeagueTableAdapter extends RecyclerView.Adapter {
         ((ItemHolder) holder).L.setText(String.valueOf(leagueTable.getStanding().get(position).getLosses()));
         ((ItemHolder) holder).PTS.setText(String.valueOf(leagueTable.getStanding().get(position).getPoints()));
         String path = leagueTable.getStanding().get(position).getCrestURI();
-        if (path != null) {
+        if (path != null)
             if (path.contains("svg")) {
-                setLogoBall(((ItemHolder) holder).imgLogo, position);
-            } else {
-                try {
-                    Picasso.with(mContext).load(path).into(((ItemHolder) holder).imgLogo);
-                } catch (Exception e) {
-                    setLogoBall(((ItemHolder) holder).imgLogo, position);
-                }
+                requestBuilder
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        // SVG cannot be serialized so it's not worth to cache it
+                        .load(Uri.parse(path))
+                        .into(((ItemHolder) holder).imgLogo);
+            } else if (path.contains("png")) {
+                Picasso.with(mContext).load(path).into(((ItemHolder) holder).imgLogo);
             }
-        } else {
-            setLogoBall(((ItemHolder) holder).imgLogo, position);
-        }
+//        if (path != null) {
+//            if (path.contains("svg")) {
+//                setLogoBall(((ItemHolder) holder).imgLogo, position);
+//            } else {
+//                try {
+//                    Picasso.with(mContext).load(path).into(((ItemHolder) holder).imgLogo);
+//                } catch (Exception e) {
+//                    setLogoBall(((ItemHolder) holder).imgLogo, position);
+//                }
+//            }
+//        } else {
+//            setLogoBall(((ItemHolder) holder).imgLogo, position);
+//        }
         if (position + 1 == 1) {
             ((ItemHolder) holder).stt.setBackgroundColor(mContext.getResources().getColor(R.color.blueDark));
             ((ItemHolder) holder).teamName.setBackgroundColor(mContext.getResources().getColor(R.color.blueDark));

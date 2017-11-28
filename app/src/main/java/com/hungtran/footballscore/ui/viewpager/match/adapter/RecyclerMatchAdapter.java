@@ -108,49 +108,51 @@ public class RecyclerMatchAdapter extends RecyclerView.Adapter {
             Team home = getTeams(listMatch.get(position).get_links().getHomeTeam().getHref());
             Team away = getTeams(listMatch.get(position).get_links().getAwayTeam().getHref());
             if (home != null) {
-                if (home.getCrestUrl() != null) {
-                    if (home.getCrestUrl().contains("svg")) {
-                        setLogoBall(((ItemMatch) holder).imgHomeTeam, position);
-                    } else {
-                        Picasso.with(mContext).load(home.getCrestUrl()).into(((ItemMatch) holder).imgHomeTeam);
-                    }
-                } else {
-                    setLogoBall(((ItemMatch) holder).imgHomeTeam, position);
-                }
-//                if (home.getCrestUrl().contains("svg")) {
-//                    requestBuilder
-//                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                            // SVG cannot be serialized so it's not worth to cache it
-//                            .load(uri)
-//                            .into(((ItemMatch) holder).imgHomeTeam);
-//                } else if (home.getCrestUrl().contains("png")) {
-//
+//                if (home.getCrestUrl() != null) {
+//                    if (home.getCrestUrl().contains("svg")) {
+//                        setLogoBall(((ItemMatch) holder).imgHomeTeam, position);
+//                    } else {
+//                        Picasso.with(mContext).load(home.getCrestUrl()).into(((ItemMatch) holder).imgHomeTeam);
+//                    }
+//                } else {
+//                    setLogoBall(((ItemMatch) holder).imgHomeTeam, position);
 //                }
-            } else {
-                ((ItemMatch) holder).imgHomeTeam.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_icon_ball));
-            }
-            if (away != null) {
-                if (away.getCrestUrl() != null) {
-                    if (away.getCrestUrl().contains("svg")) {
-                        setLogoBall(((ItemMatch) holder).imgAwayTeam, position + 4);
-                    } else {
-                        Picasso.with(mContext).load(home.getCrestUrl()).into(((ItemMatch) holder).imgAwayTeam);
-                    }
-                } else {
-                    setLogoBall(((ItemMatch) holder).imgAwayTeam, position + 4);
+                if (home.getCrestUrl().contains("svg")) {
+                    requestBuilder
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            // SVG cannot be serialized so it's not worth to cache it
+                            .load(Uri.parse(home.getCrestUrl()))
+                            .into(((ItemMatch) holder).imgHomeTeam);
+                } else if (home.getCrestUrl().contains("png")) {
+                    Picasso.with(mContext).load(home.getCrestUrl()).into(((ItemMatch) holder).imgAwayTeam);
                 }
-//                if (away.getCrestUrl().contains("svg")) {
-//                    requestBuilder
-//                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                            // SVG cannot be serialized so it's not worth to cache it
-//                            .load(uri)
-//                            .into(((ItemMatch) holder).imgAwayTeam);
-//                } else if (away.getCrestUrl().contains("png")) {
-//
-//                }
-            } else {
-                ((ItemMatch) holder).imgAwayTeam.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_icon_ball));
             }
+//            } else {
+//                ((ItemMatch) holder).imgHomeTeam.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_icon_ball));
+//            }
+//            if (away != null) {
+//                if (away.getCrestUrl() != null) {
+//                    if (away.getCrestUrl().contains("svg")) {
+//                        setLogoBall(((ItemMatch) holder).imgAwayTeam, position + 4);
+//                    } else {
+//                        Picasso.with(mContext).load(home.getCrestUrl()).into(((ItemMatch) holder).imgAwayTeam);
+//                    }
+//                } else {
+//                    setLogoBall(((ItemMatch) holder).imgAwayTeam, position + 4);
+//                }
+            if (away != null)
+                if (away.getCrestUrl().contains("svg")) {
+                    requestBuilder
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            // SVG cannot be serialized so it's not worth to cache it
+                            .load(Uri.parse(away.getCrestUrl()))
+                            .into(((ItemMatch) holder).imgAwayTeam);
+                } else if (away.getCrestUrl().contains("png")) {
+                    Picasso.with(mContext).load(away.getCrestUrl()).into(((ItemMatch) holder).imgAwayTeam);
+                }
+//            } else {
+//                ((ItemMatch) holder).imgAwayTeam.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_icon_ball));
+//            }
             if (String.valueOf(listMatch.get(position).getResult().getGoalsAwayTeam()) != null) {
                 ((ItemMatch) holder).txtAwayScore.setText(listMatch.get(position).getResult().getGoalsAwayTeam() + "");
                 ((ItemMatch) holder).txtHomeScore.setText(listMatch.get(position).getResult().getGoalsHomeTeam() + "");
